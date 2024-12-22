@@ -6,7 +6,7 @@ document.body.appendChild(renderer.domElement);
 
 // Create particles
 const particlesGeometry = new THREE.BufferGeometry();
-const particlesCount = 5000;
+const particlesCount = 15000;
 const posArray = new Float32Array(particlesCount * 3);
 
 for(let i = 0; i < particlesCount * 3; i++) {
@@ -14,10 +14,15 @@ for(let i = 0; i < particlesCount * 3; i++) {
 }
 
 particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+
 const particlesMaterial = new THREE.PointsMaterial({ 
-    size: 0.05,
+    size: 0.15,
+    map: new THREE.TextureLoader().load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/sprites/spark1.png'),
+    transparent: true,
     color: 0x00ffff,
-    blending: THREE.AdditiveBlending
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
 });
 
 const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
@@ -100,6 +105,10 @@ function animate() {
     camera.lookAt(scene.position);
 
     renderer.render(scene, camera);
+
+    // Additional particle rotation
+    particlesMesh.rotation.y += 0.001;
+    particlesMesh.rotation.x += 0.0005;
 }
 
 animate();
